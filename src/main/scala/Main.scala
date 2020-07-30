@@ -2,6 +2,7 @@ import redis.RedisClient
 import scala.concurrent.{Future, Await}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.postfixOps
 
 object Main extends App {
   implicit val akkaSystem = akka.actor.ActorSystem()
@@ -19,7 +20,8 @@ object Main extends App {
 
   Await.result(futureResult, 5 seconds)
 
-  akkaSystem.shutdown()
+  // akkaSystem.shutdown()
+  akkaSystem.terminate()
 
   def doSomething(redis: RedisClient): Future[Boolean] = {
     // launch command set and del in parallel

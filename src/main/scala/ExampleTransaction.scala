@@ -3,6 +3,8 @@ import redis.RedisClient
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.postfixOps
+import scala.util.{Failure, Success}
 
 object ExampleTransaction extends App {
   implicit val akkaSystem = akka.actor.ActorSystem()
@@ -24,10 +26,11 @@ object ExampleTransaction extends App {
     assert(g == Some(ByteString("abcValue")))
     println("ok : get(\"key\") == \"abcValue\"")
   }
-  decr.onFailure({
-    case error => println(s"decr failed : $error")
+  decr.onComplete({
+    case Success(value) => println(s"decr: $value")
+    case Failure(e) => println(s"decr failed : $e")
   })
   Await.result(r, 10 seconds)
 
-  akkaSystem.shutdown()
+  akkaSystem.terminate()
 }

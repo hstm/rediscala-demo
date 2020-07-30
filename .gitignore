@@ -6,6 +6,8 @@ target/
 .project*
 .settings*
 .worksheet/
+.metals/
+project/
 
 .*.s[a-w][a-z]
 *.un~

@@ -4,6 +4,7 @@ import redis.{ByteStringSerializer, RedisClient, ByteStringFormatter}
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.postfixOps
 
 case class DumbClass(s1: String, s2: String)
 
@@ -59,6 +60,6 @@ object ExampleByteStringFormatter extends App {
   val bool = Await.result(exists, 5 seconds)
   assert(!bool)
 
-  akkaSystem.shutdown()
+  akkaSystem.terminate()
 }
 

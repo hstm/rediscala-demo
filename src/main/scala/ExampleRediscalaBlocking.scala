@@ -2,6 +2,7 @@ import redis.{RedisBlockingClient, RedisClient}
 import scala.concurrent.{Future, Await}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.postfixOps
 
 object ExampleRediscalaBlocking extends App {
   implicit val akkaSystem = akka.actor.ActorSystem()
@@ -16,7 +17,7 @@ object ExampleRediscalaBlocking extends App {
   })
 
   Await.result(r, 15 seconds)
-  akkaSystem.shutdown()
+  akkaSystem.terminate()
 
 
   def publisher() = {

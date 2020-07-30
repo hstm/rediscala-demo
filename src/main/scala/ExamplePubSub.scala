@@ -5,6 +5,7 @@ import redis.api.pubsub.{PMessage, Message}
 import redis.RedisClient
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.postfixOps
 
 object ExamplePubSub extends App {
   implicit val akkaSystem = akka.actor.ActorSystem()
@@ -13,7 +14,7 @@ object ExamplePubSub extends App {
 
   akkaSystem.scheduler.schedule(2 seconds, 2 seconds)(redis.publish("time", System.currentTimeMillis()))
   akkaSystem.scheduler.schedule(2 seconds, 5 seconds)(redis.publish("pattern.match", "pattern value"))
-  akkaSystem.scheduler.scheduleOnce(20 seconds)(akkaSystem.shutdown())
+  akkaSystem.scheduler.scheduleOnce(20 seconds)(akkaSystem.terminate())
 
   val channels = Seq("time")
   val patterns = Seq("pattern.*")

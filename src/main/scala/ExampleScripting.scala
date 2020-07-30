@@ -4,6 +4,7 @@ import redis.RedisClient
 import scala.concurrent.duration._
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.postfixOps
 
 object ExampleScripting extends App {
   implicit val akkaSystem = akka.actor.ActorSystem()
@@ -41,5 +42,5 @@ object ExampleScripting extends App {
   }
   Await.result(r, 5 seconds)
 
-  akkaSystem.shutdown()
+  akkaSystem.terminate()
 }
